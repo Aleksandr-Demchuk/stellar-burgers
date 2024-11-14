@@ -1,5 +1,3 @@
-import '../../index.css';
-import styles from './app.module.css';
 import {
   ConstructorPage,
   Feed,
@@ -11,29 +9,41 @@ import {
   Register,
   ResetPassword
 } from '@pages';
-
+import '../../index.css';
+import styles from './app.module.css';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { useDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import { loadIngredients } from '../../services/slices/ingredientsSlice';
-import { Route, Routes, useNavigate, useLocation  } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
+import { userAuth, UserChecked } from '../../services/slices/userSlice';
 
-const App = () => {
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const backgroundPosition = location.state?.background;
-  useEffect(() => {
-    dispatch(loadIngredients());
-  }, []);
-
+function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes location={backgroundPosition || location}>
+      <RouteComponent />
+    </div>
+  );
+}
+export default App;
+const RouteComponent = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const backgroundLocation = location.state?.background;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadIngredients());
+    dispatch(userAuth());
+  }, []);
+  return (
+    <>
+      <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed' element={<Feed />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
         <Route
           path='/login'
           element={
@@ -83,66 +93,53 @@ const App = () => {
           }
         />
         <Route
-          path='/feed/:number'
-          element={
-            <Modal title='Детали заказа' onClose={() => navigate('/feed')}>
-              <OrderInfo />
-            </Modal>
-          }
-        />
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal title='Детали ингредиента' onClose={() => navigate('/')}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-        <Route
           path='/profile/orders/:number'
           element={
-            <Modal
-              title='Детали заказа'
-              onClose={() => navigate('/profile/orders')}
-            >
+            <ProtectedRoute>
               <OrderInfo />
-            </Modal>
+            </ProtectedRoute>
           }
         />
         <Route path='*' element={<NotFound404 />} />
-        {backgroundPosition && (
+      </Routes>
+      {backgroundLocation && (
         <Routes>
           <Route
-            path='/feed/:number'
+            path='/ingredients/:id'
             element={
-              <Modal title='Детали заказа' onClose={() => navigate('/feed')}>
-                <OrderInfo />
+              <Modal
+                title='Детали ингредиента'
+                onClose={() => {
+                  navigate('/');
+                }}
+              >
+                <IngredientDetails />
               </Modal>
             }
           />
           <Route
-            path='/ingredients/:id'
+            path='/feed/:number'
             element={
-              <Modal title='Детали ингредиента' onClose={() => navigate('/')}>
-                <IngredientDetails />
+              <Modal title={'Номер'} onClose={() => navigate('/feed')}>
+                <OrderInfo />
               </Modal>
             }
           />
           <Route
             path='/profile/orders/:number'
             element={
-              <Modal
-                title='Детали заказа'
-                onClose={() => navigate('/profile/orders')}
-              >
-                <OrderInfo />
-              </Modal>
+              <ProtectedRoute>
+                <Modal
+                  title={'Номер'}
+                  onClose={() => navigate('/profile/orders')}
+                >
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
             }
           />
         </Routes>
       )}
-    </div>
+    </>
   );
 };
-
-export default App;
