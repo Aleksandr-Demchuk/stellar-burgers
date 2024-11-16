@@ -18,10 +18,11 @@ import { useNavigate } from 'react-router-dom';
 import { UserData } from '../../services/slices/userSlice';
 
 export const BurgerConstructor: FC = () => {
-  const dispatch = useDispatch();
   const constructorItems = useSelector(getIngredients);
   const orderRequest = useSelector(getOrderRequest);
   const orderModalData = useSelector(getOrder);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const userData = useSelector(UserData);
 

@@ -1,3 +1,7 @@
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import '../../index.css';
+import styles from './app.module.css';
+
 import {
   ConstructorPage,
   Feed,
@@ -9,36 +13,29 @@ import {
   Register,
   ResetPassword
 } from '@pages';
-import '../../index.css';
-import styles from './app.module.css';
+
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { useDispatch, useSelector } from '../../services/store';
+
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
 import { loadIngredients } from '../../services/slices/ingredientsSlice';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { userAuth, UserChecked } from '../../services/slices/userSlice';
 
-function App() {
-  return (
-    <div className={styles.app}>
-      <AppHeader />
-      <RouteComponent />
-    </div>
-  );
-}
-export default App;
-const RouteComponent = () => {
+const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const backgroundLocation = location.state?.background;
   const dispatch = useDispatch();
+  const backgroundLocation = location.state?.background;
+
   useEffect(() => {
     dispatch(loadIngredients());
     dispatch(userAuth());
   }, []);
+
   return (
-    <>
+    <div className={styles.app}>
+      <AppHeader />
       <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
@@ -140,6 +137,8 @@ const RouteComponent = () => {
           />
         </Routes>
       )}
-    </>
+    </div>
   );
 };
+
+export default App;
