@@ -7,10 +7,12 @@ import {
   RequestLoginUser
 } from '../../services/slices/userSlice';
 import { Preloader } from '@ui';
+
 export const Register: FC = () => {
   const errorText = useSelector(RegisterError) || undefined;
   const request = useSelector(RequestLoginUser);
   const dispatch = useDispatch();
+
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

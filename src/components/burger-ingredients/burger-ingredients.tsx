@@ -7,24 +7,22 @@ import { useSelector } from '../../services/store';
 import {
   addAllIngredients,
   ingredientsError
-} from '../../services/slices/ingredientsSlice';
+} from '../../services/slices/ingridients';
 
 export const BurgerIngredients: FC = () => {
-  /** TODO: взять переменные из стора */
-  const burgerIngridients = useSelector(addAllIngredients);
-  const burgerIngridientsError = useSelector(ingredientsError);
+  const burgerIngredients = useSelector(addAllIngredients);
 
-  const buns = burgerIngridients.filter(
-    (ingridient) => ingridient.type === 'bun'
-  );
-  const mains = burgerIngridients.filter(
-    (ingridient) => ingridient.type === 'main'
-  );
-  const sauces = burgerIngridients.filter(
-    (ingridient) => ingridient.type === 'sauce'
-  );
+  const burgerIngredientsError = useSelector(ingredientsError);
 
-  console.log(burgerIngridientsError);
+  const buns = burgerIngredients.filter(
+    (ingredient) => ingredient.type === 'bun'
+  );
+  const mains = burgerIngredients.filter(
+    (ingredient) => ingredient.type === 'main'
+  );
+  const sauces = burgerIngredients.filter(
+    (ingredient) => ingredient.type === 'sauce'
+  );
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
@@ -34,12 +32,15 @@ export const BurgerIngredients: FC = () => {
   const [bunsRef, inViewBuns] = useInView({
     threshold: 0
   });
+
   const [mainsRef, inViewFilling] = useInView({
     threshold: 0
   });
+
   const [saucesRef, inViewSauces] = useInView({
     threshold: 0
   });
+
   useEffect(() => {
     if (inViewBuns) {
       setCurrentTab('bun');
@@ -49,6 +50,7 @@ export const BurgerIngredients: FC = () => {
       setCurrentTab('main');
     }
   }, [inViewBuns, inViewFilling, inViewSauces]);
+
   const onTabClick = (tab: string) => {
     setCurrentTab(tab as TTabMode);
     if (tab === 'bun')
@@ -61,7 +63,7 @@ export const BurgerIngredients: FC = () => {
 
   return (
     <>
-      {burgerIngridientsError ? (
+      {burgerIngredientsError ? (
         <div>Опа</div>
       ) : (
         <BurgerIngredientsUI

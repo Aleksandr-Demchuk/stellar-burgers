@@ -1,4 +1,5 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import '../../index.css';
 import styles from './app.module.css';
 
@@ -16,10 +17,9 @@ import {
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from '../../services/store';
-import { loadIngredients } from '../../services/slices/ingredientsSlice';
 import { ProtectedRoute } from '../protected-route/protected-route';
+import { useDispatch, useSelector } from '../../services/store';
+import { loadIngredients } from '../../services/slices/ingridients';
 import { userAuth, UserChecked } from '../../services/slices/userSlice';
 
 const App = () => {

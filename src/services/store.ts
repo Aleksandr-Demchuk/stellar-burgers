@@ -1,8 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import {
-  ingredientsReducer,
-  ingredientsSliceName
-} from './slices/ingredientsSlice';
+import { ingredientsReducer, ingredientsSliceName } from './slices/ingridients';
 
 import {
   TypedUseSelectorHook,
