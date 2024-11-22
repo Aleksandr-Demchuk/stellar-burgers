@@ -8,7 +8,7 @@ import {
   getOrdersRequest,
   loadingUsers
 } from '../../services/slices/orders';
-import { UserData } from '../../services/slices/userSlice';
+import { UserData } from '../../services/slices/user';
 
 export const ProfileOrders: FC = () => {
   const isLoading = useSelector(getOrdersRequest);

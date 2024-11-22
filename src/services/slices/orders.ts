@@ -14,7 +14,7 @@ export const initialState: TOrdersState = {
 
 export const loadingUsers = createAsyncThunk(
   'orders/loadUserOrders',
-  async () => getOrdersApi()
+  getOrdersApi
 );
 
 export const ordersSlice = createSlice({

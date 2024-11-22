@@ -82,7 +82,7 @@ export const userAuth = () => (dispatch: AppDispatch) => {
 };
 
 export const updateUser = createAsyncThunk(
-  'user,updateUserApi',
+  'user/updateUserApi',
   async (user: TRegisterData, { rejectWithValue }) => {
     const response = await updateUserApi(user);
 
@@ -97,6 +97,8 @@ export const logout = createAsyncThunk(
   'user/logoutApi',
   async (_, { rejectWithValue }) => {
     const response = await logoutApi();
+    localStorage.clear();
+    deleteCookie('accessToken');
 
     if (!response.success) {
       return rejectWithValue(null);
@@ -154,8 +156,6 @@ export const userSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.requestLoginUser = false;
         state.userData = null;
-        localStorage.clear();
-        deleteCookie('accessToken');
       })
       .addCase(logout.rejected, (state) => {
         state.requestLoginUser = false;

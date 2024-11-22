@@ -13,21 +13,22 @@ import {
   createOrder
 } from '../../services/slices/orderSlice';
 import { useNavigate } from 'react-router-dom';
-import { UserData } from '../../services/slices/userSlice';
+import { UserData } from '../../services/slices/user';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const constructorItems = useSelector(getIngredients);
   const orderRequest = useSelector(getOrderRequest);
   const orderModalData = useSelector(getOrder);
-  const navigate = useNavigate();
   const userData = useSelector(UserData);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
 
     if (!userData) {
-      navigate('/login'), { replace: true };
+      navigate('/login', { replace: true });
       return;
     }
 
@@ -58,12 +59,14 @@ export const BurgerConstructor: FC = () => {
     [constructorItems]
   );
 
+  const showModal = userData && orderModalData;
+
   return (
     <BurgerConstructorUI
       price={price}
       orderRequest={orderRequest}
       constructorItems={constructorItems}
-      orderModalData={orderModalData}
+      orderModalData={showModal ? orderModalData : null}
       onOrderClick={onOrderClick}
       closeOrderModal={closeOrderModal}
     />

@@ -5,7 +5,7 @@ import {
   LoginError,
   loginUser,
   RequestLoginUser
-} from '../../services/slices/userSlice';
+} from '../../services/slices/user';
 import { Preloader } from '../../components/ui/preloader';
 
 export const Login: FC = () => {

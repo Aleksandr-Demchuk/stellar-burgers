@@ -20,7 +20,7 @@ import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useDispatch, useSelector } from '../../services/store';
 import { loadIngredients } from '../../services/slices/ingridients';
-import { userAuth, UserChecked } from '../../services/slices/userSlice';
+import { userAuth, UserChecked } from '../../services/slices/user';
 
 const App = () => {
   const navigate = useNavigate();
